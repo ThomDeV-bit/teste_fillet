@@ -9,29 +9,33 @@ import { CepService } from './cep.service';
 @Injectable()
 export class ClienteService {
     constructor(
-        private readonly clienteRepository : ClienteRepository,
-        private readonly cepService : CepService
-    ){}
-  async create(createClienteDto: CreateClienteDto) {
+        private readonly clienteRepository: ClienteRepository,
+        private readonly cepService: CepService
+    ) { }
+    async create(createClienteDto: CreateClienteDto) {
+        const cep = await this.cepService.consultaCep(createClienteDto.cep)
+        if(cep) {
+            createClienteDto.bairro = cep.bairro
+            createClienteDto.cidade = cep.localidade
+            createClienteDto.estado = cep.estado
+        }
 
-    await this.cepService.consultaCep(createClienteDto.cep)
+        return await this.clienteRepository.createCliente(createClienteDto);
+    }
 
-    return await this.clienteRepository.createCliente(createClienteDto);
-  }
+    async findAll(): Promise<ClienteEntity[]> {
+        return await this.clienteRepository.getClientes();
+    }
 
-   async findAll() : Promise<ClienteEntity[]>{
-    return await this.clienteRepository.getClientes();
-  }
+    findOne(id: number) {
+        return `This action returns a #${id} cliente`;
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cliente`;
-  }
+    update(id: number, updateClienteDto: UpdateClienteDto) {
+        return `This action updates a #${id} cliente`;
+    }
 
-  update(id: number, updateClienteDto: UpdateClienteDto) {
-    return `This action updates a #${id} cliente`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} cliente`;
-  }
+    remove(id: number) {
+        return `This action removes a #${id} cliente`;
+    }
 }
