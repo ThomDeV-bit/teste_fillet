@@ -1,7 +1,7 @@
-import { ClienteEntity } from "../clientes/entities/cliente.entity";
-import { DataSourceOptions, DataSource } from "typeorm";
+import { ClienteEntity } from '../clientes/entities/cliente.entity';
+import { DataSourceOptions, DataSource } from 'typeorm';
 import 'dotenv/config';
-import { CreateClienteTable1760275343520 } from "./migrations/1760275343520-create_cliente_table";
+import { CreateClienteTable1760284105629 } from './migrations/1760284105629-create_cliente_table';
 
 export const dataSourceOptions: DataSourceOptions = {
     type: 'mysql',
@@ -12,9 +12,9 @@ export const dataSourceOptions: DataSourceOptions = {
     database: process.env.MYSQL_DATABASE,
     cache: true,
     entities: [ClienteEntity],
-    migrations: [CreateClienteTable1760275343520],
+    migrations: [CreateClienteTable1760284105629],
     synchronize: true,
-    logging: 'all'
+    logging: 'all',
 };
 
 const dataSource = new DataSource(dataSourceOptions);
