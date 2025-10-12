@@ -12,4 +12,4 @@ export class CepResponse {
     gia: string;
     ddd: string;
     siafi: string;
-  }
+}

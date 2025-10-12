@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
 import { IsDate, IsNotEmpty, IsString, Length, Matches } from "class-validator"
+import { isValid, parse } from "date-fns";
 import { IsValidCpf } from "src/common/custom-decorators/isValidCpf.decorator";
 import { IsValidDate } from "src/common/custom-decorators/isValidDate.decorator";
 
@@ -33,20 +35,14 @@ export class CreateClienteDto {
     cpf: string
 
     @ApiProperty()
-    @Length(8,8 , {message : 'Cep inválido!'})
+    @Length(8, 8, { message: 'Cep inválido!' })
     @IsString()
     cep: string
 
-    @ApiProperty()
-    @IsString()
-    bairro: string
+    bairro?: string
 
-    @ApiProperty()
-    @IsString()
-    cidade: string
+    cidade?: string
 
-    @ApiProperty()
-    @IsString()
-    estado: string
+    estado?: string
 }
 

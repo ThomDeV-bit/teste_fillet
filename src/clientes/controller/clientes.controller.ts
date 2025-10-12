@@ -12,7 +12,7 @@ export class ClienteController {
     try{
         return this.clienteService.create(createClienteDto);
     }catch(error){
-        throw new BadRequestException()
+        throw error
     }
   }
 
