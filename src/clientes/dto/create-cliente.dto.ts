@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsString, Length, Matches } from "class-validator"
-import { IsValidCpf } from "src/common/custom-decorators/isValidCpf.decorator";
-import { IsValidDate } from "src/common/custom-decorators/isValidDate.decorator";
+import { IsValidCpf } from "../../common/custom-decorators/isValidCpf.decorator";
+import { IsValidDate } from "../../common/custom-decorators/isValidDate.decorator";
 
 export class CreateClienteDto {
     @ApiProperty({
