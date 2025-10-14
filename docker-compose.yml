@@ -45,7 +45,7 @@ services:
       - 3000
     volumes:
       - .:/usr/src/app
-    command: npm run build && npm run start:prod
+    command: sh -c "npm run build && npm run start:prod"
 
 networks:
   internal_network:
