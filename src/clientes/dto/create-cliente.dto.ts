@@ -1,7 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString, Length, Matches } from "class-validator"
-import { isValid, parse } from "date-fns";
+import { IsNotEmpty, IsString, Length, Matches } from "class-validator"
 import { IsValidCpf } from "src/common/custom-decorators/isValidCpf.decorator";
 import { IsValidDate } from "src/common/custom-decorators/isValidDate.decorator";
 
@@ -10,7 +8,9 @@ export class CreateClienteDto {
         nullable: false
     })
     @IsString()
-    @Length(5, 60)
+    @Length(5, 60, {
+        message: 'O nome completo deve ter entre 5 e 60 caracteres.',
+    })
     nomeCompleto: string
 
     @ApiProperty({
