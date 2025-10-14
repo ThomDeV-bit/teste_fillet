@@ -5,38 +5,62 @@ import { ClienteService } from '../service/clientes.service';
 
 @Controller('cliente')
 export class ClienteController {
-  constructor(private readonly clienteService: ClienteService) {}
+    constructor(private readonly clienteService: ClienteService) { }
 
-  @Post()
-  create(@Body() createClienteDto: CreateClienteDto) {
-    try{
-        return this.clienteService.create(createClienteDto);
-    }catch(error){
-        throw error
+    @Post()
+    async create(@Body() createClienteDto: CreateClienteDto) {
+        try {
+            await this.clienteService.createCliente(createClienteDto);
+
+            return {
+                message: 'Cliente criado com sucesso'
+            }
+        } catch (error) {
+            throw error
+        }
     }
-  }
 
-  @Get()
-  findAll() {
-    try {
-        return this.clienteService.findAll();
-    } catch (error) {
-        throw new BadRequestException()
+    @Get()
+    async getClientes() {
+        try {
+            return this.clienteService.getClientes();
+        } catch (error) {
+            throw new BadRequestException()
+        }
     }
-  }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clienteService.findOne(+id);
-  }
+    @Get(':id')
+    async getClienteById(@Param('id') id: string) {
+        try {
+            return this.clienteService.getClienteById(+id);
+        } catch (error) {
+            throw error
+        }
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
-    return this.clienteService.update(+id, updateClienteDto);
-  }
+    @Patch(':id')
+    async update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
+        try {
+            await this.clienteService.updateCliente(+id, updateClienteDto);
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clienteService.remove(+id);
-  }
+            return {
+                message: 'Cliente alterado com sucesso.'
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    @Delete(':id')
+    async remove(@Param('id') id: string) {
+        try {
+            await this.clienteService.removeCliente(+id);
+
+            return {
+                message: 'Cliente excluido com sucesso.'
+            }
+        } catch (error) {
+            throw error
+        }
+    }
 }

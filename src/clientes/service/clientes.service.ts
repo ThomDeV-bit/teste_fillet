@@ -12,8 +12,10 @@ export class ClienteService {
         private readonly clienteRepository: ClienteRepository,
         private readonly cepService: CepService
     ) { }
-    async create(createClienteDto: CreateClienteDto) {
+
+    async createCliente(createClienteDto: CreateClienteDto) : Promise<boolean> {
         const cep = await this.cepService.consultaCep(createClienteDto.cep)
+
         if(cep) {
             createClienteDto.bairro = cep.bairro
             createClienteDto.cidade = cep.localidade
@@ -23,19 +25,19 @@ export class ClienteService {
         return await this.clienteRepository.createCliente(createClienteDto);
     }
 
-    async findAll(): Promise<ClienteEntity[]> {
+    async getClientes(): Promise<ClienteEntity[]> {
         return await this.clienteRepository.getClientes();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} cliente`;
+    async getClienteById(id: number) : Promise<ClienteEntity>{
+        return await this.clienteRepository.getClienteById(id)
     }
 
-    update(id: number, updateClienteDto: UpdateClienteDto) {
-        return `This action updates a #${id} cliente`;
+    async updateCliente(id: number, updateClienteDto: UpdateClienteDto): Promise<boolean> {
+        return await this.clienteRepository.updateCliente(id, updateClienteDto)
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} cliente`;
+   async removeCliente(id: number) {
+        return await this.clienteRepository.removeCliente(id)
     }
 }
