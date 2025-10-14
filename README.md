@@ -1,198 +1,98 @@
-Teste Técnico - Aplicação Node.js com MySQL e Docker
-Este projeto é uma solução de backend desenvolvida em Node.js 20 utilizando TypeScript e TypeORM, conteinerizada com Docker e Docker Compose, utilizando MySQL como banco de dados.
+# README.md
 
-📋 Requisitos do Projeto
-O projeto foi estruturado para atender🛠️ aos seguintes requisitos técnicos:
+# Aplicação NestJS com Docker
 
-Utilização de Docker (Para conteinerização da aplicação e do banco de dados).
+Este projeto é uma aplicação **NestJS** pronta para rodar com **Docker**, permitindo um setup rápido sem precisar instalar Node.js ou bancos de dados localmente.
 
-Banco de dados MySQL (Para persistência de dados).
+---
 
-Ambiente Node.js 20 (Com suporte total a TypeScript).
+## Pré-requisitos
 
-Testes Unitários (Para garantir a integridade das funcionalidades).
+Antes de começar, você precisa ter instalado:
 
-Pequena Documentação para uso da API (Detalhada abaixo).
+* [Docker](https://www.docker.com/get-started)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
-1. Pré-requisitos
-Para executar o projeto, você precisa ter instalado na sua máquina:
+## Rodando com Docker
 
-Node.js (v18 ou superior, embora o contêiner use v20).
+### 1️⃣ Build e start dos containers
 
-Docker
+```bash
+docker-compose up --build
+```
 
-Docker Compose (Geralmente incluído na instalação do Docker Desktop).
+* O comando irá:
 
-2. Configuração do Ambiente
-2.1. Variáveis de Ambiente (.env)
-Crie um arquivo chamado .env na raiz do projeto, seguindo o exemplo abaixo. Essas variáveis são usadas tanto pelo Docker Compose quanto pela sua aplicação Node.js para se conectar ao banco de dados.
+  * Construir a imagem Docker da aplicação NestJS
+  * Subir o container da aplicação
+  * Subir o container do banco de dados
 
-O valor de MYSQL_HOST deve ser o nome do serviço MySQL no seu docker-compose.yml (mysqldb) ou localhost caso esteja rodando a aplicação localmente.
+### 2️⃣ Acessando a aplicação
 
-# ⚙️ Configurações do Banco de Dados (MySQL)
-# Estas variáveis são injetadas no serviço 'mysqldb' e 'app'
+* A aplicação ficará disponível em: `http://localhost:3000`
+* Se você estiver usando Swagger, geralmente em: `http://localhost:3000/api`
 
-# Host para conexão interna (nome do serviço no Docker Compose)
-MYSQL_HOST=mysqldb
-# Porta interna do MySQL no contêiner
-MYSQL_LOCAL_PORT=3306
-# Porta externa para acessar o MySQL diretamente (opcional, mas útil)
-MYSQL_EXTERNAL_PORT=3307
+---
 
-# Credenciais do usuário da aplicação
-MYSQL_USERNAME=fillet_user # NUNCA use 'root' aqui para o usuário da aplicação
-MYSQL_PASSWORD=123456
-MYSQL_DATABASE=teste_fillet_db
+### 3️⃣ Comandos úteis
 
-# Senha do usuário ROOT do MySQL (para inicialização do banco)
-MYSQL_ROOT_PASSWORD=123456
+* **Parar containers**:
 
-# 🚀 Configurações da Aplicação
-NODE_ENV=development # production, development, test
-APP_PORT=3000
+```bash
+docker-compose down
+```
 
-2.2. Arquivos de Configuração
-Dockerfile: Contém a definição da imagem Node.js 20, a instalação de dependências e a compilação do código TypeScript (npm run build).
+* **Rodar em modo detach (background)**:
 
-docker-compose.yml: Define os dois serviços principais:
+```bash
+docker-compose up -d
+```
 
-mysqldb: Contêiner MySQL.
+* **Ver logs da aplicação**:
 
-app: Contêiner Node.js.
+```bash
+docker-compose logs -f
+```
 
-Importante: O comando de inicialização do app (sh -c "npm run build && npm run start:prod") garante que o código seja recompilado dentro do contêiner antes de iniciar, resolvendo conflitos com a montagem de volume em desenvolvimento.
+* **Rebuild da imagem** (quando alterar dependências):
 
-3. Execução do Projeto (Docker)
-Para subir a aplicação e o banco de dados, use o Docker Compose.
+```bash
+docker-compose build --no-cache
+```
 
-Build e Inicialização:
-Execute o comando abaixo na raiz do projeto. O --build garante que as imagens sejam reconstruídas caso haja mudanças no Dockerfile.
+---
 
-docker compose up --build -d
+## Rodando testes
 
-A flag -d executa os contêineres em detached mode (em segundo plano).
+Rodar os testes dentro do container:
 
-Verificação:
-Após a inicialização, verifique o status dos contêineres:
+```bash
+docker-compose exec app npm run test
+```
 
-docker compose ps
+Ou localmente:
 
-Ambos os serviços (fillet_db e teste_fillet) devem estar com status Up.
+```bash
+npm install
+npm run test
+```
 
-Acesso à Aplicação:
-A API estará acessível em: http://localhost:3000
+---
 
-Logoff:
-Para parar e remover os contêineres e a rede criada:
+## Scripts npm disponíveis
 
-docker compose down
+* `npm run start` → Inicia a aplicação
+* `npm run start:dev` → Inicia em modo desenvolvimento (watch)
+* `npm run build` → Compila a aplicação
+* `npm run test` → Executa os testes unitários
+* `npm run test:watch` → Testes em modo watch
+* `npm run lint` → Checa lint do projeto
 
-4. Testes Unitários
-O projeto utiliza o Jest (ou o framework configurado) para testes unitários, que garantem que cada unidade do código (serviços, controllers, entities) funcione conforme o esperado.
+---
 
-Para rodar os testes, use o comando:
+## Observações
 
-docker compose exec app npm run test
+* Certifique-se de que as portas definidas no `.env` e `docker-compose.yml` não estejam em conflito com outros serviços.
+* O `docker-compose.yml` pode incluir outros serviços como Redis, RabbitMQ, etc., se necessário.
+* Para ambientes de produção, configure volumes, redes e variáveis de ambiente adequadamente.
 
-O comando exec garante que os testes sejam executados dentro do contêiner da aplicação, onde todas as dependências estão configuradas.
-
-Comando de Teste Contínuo (Watch Mode):
-
-docker compose exec app npm run test:watch
-
-5. Documentação da API
-A aplicação oferece endpoints RESTful para o gerenciamento de recursos (ex: Clientes). O acesso deve ser feito na porta 3000.
-
-5.1. Recursos: /clientes
-Método
-
-Endpoint
-
-Descrição
-
-Status de Resposta
-
-GET
-
-/clientes
-
-Retorna uma lista de todos os clientes.
-
-200 OK
-
-GET
-
-/clientes/:id
-
-Retorna os detalhes de um cliente específico.
-
-200 OK, 404 Not Found
-
-POST
-
-/clientes
-
-Cria um novo cliente no banco de dados.
-
-201 Created, 400 Bad Request
-
-PUT
-
-/clientes/:id
-
-Atualiza completamente um cliente existente.
-
-200 OK, 404 Not Found
-
-DELETE
-
-/clientes/:id
-
-Remove um cliente específico do banco de dados.
-
-204 No Content, 404 Not Found
-
-5.2. Exemplos de Uso
-Criar um Novo Cliente (POST /clientes)
-Requisição:
-
-POST http://localhost:3000/clientes
-Content-Type: application/json
-
-{
-    "nome": "João Silva",
-    "email": "joao.silva@exemplo.com",
-    "telefone": "999999999"
-}
-
-Resposta (201 Created):
-
-{
-    "id": "uuid-gerado-pelo-sistema",
-    "nome": "João Silva",
-    "email": "joao.silva@exemplo.com",
-    "telefone": "999999999",
-    "criadoEm": "2025-10-14T15:00:00.000Z"
-}
-
-Buscar Todos os Clientes (GET /clientes)
-Requisição:
-
-GET http://localhost:3000/clientes
-
-Resposta (200 OK):
-
-[
-    {
-        "id": "uuid-001",
-        "nome": "João Silva",
-        "email": "joao.silva@exemplo.com",
-        "telefone": "999999999"
-    },
-    {
-        "id": "uuid-002",
-        "nome": "Maria Souza",
-        "email": "maria.souza@exemplo.com",
-        "telefone": "888888888"
-    }
-]
