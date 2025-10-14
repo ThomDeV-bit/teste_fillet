@@ -1,0 +1,54 @@
+
+services:
+  mysqldb:
+    image: mysql:latest
+    container_name: fillet_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD:  ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_EXTERNAL_PORT}:${MYSQL_LOCAL_PORT}"
+    expose:
+      - "${MYSQL_LOCAL_PORT}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 30s
+      retries: 10
+    networks:
+      - internal_network
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  app:
+    depends_on:
+      - mysqldb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_LOCAL_PORT: ${MYSQL_LOCAL_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      NODE_ENV: production
+    networks:
+      - internal_network
+    container_name: teste_fillet
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    volumes:
+      - .:/usr/src/app
+    command: npm run build && npm run start:prod
+
+networks:
+  internal_network:
+    external: true
+    name: internal_network
+    driver: bridge
