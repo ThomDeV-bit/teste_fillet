@@ -1,4 +1,4 @@
-import { ClienteEntity } from 'src/clientes/entities/cliente.entity';
+import { ClienteEntity } from '../clientes/entities/cliente.entity';
 import { dataSourceOptions } from './database.provider';
 import { Module, DynamicModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

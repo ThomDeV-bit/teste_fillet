@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { parse } from 'date-fns';
-import { CreateClienteDto } from 'src/clientes/dto/create-cliente.dto';
-import { UpdateClienteDto } from 'src/clientes/dto/update-cliente.dto';
-import { ClienteEntity } from 'src/clientes/entities/cliente.entity';
+import { CreateClienteDto } from '../../clientes/dto/create-cliente.dto';
+import { UpdateClienteDto } from '../../clientes/dto/update-cliente.dto';
+import { ClienteEntity } from '../../clientes/entities/cliente.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -63,7 +63,9 @@ export class ClienteRepository {
 
             const clienteAtualizado = this.clienteEntity.merge(cliente, {
                 ...clienteDto,
-                dataNascimento: parse(clienteDto.dataNascimento, 'dd/MM/yyyy', new Date()),
+                ...(clienteDto.dataNascimento
+                    ? { dataNascimento: parse(clienteDto.dataNascimento, 'dd/MM/yyyy', new Date()) }
+                    : {}),
             });
 
             await this.clienteEntity.save(clienteAtualizado)
