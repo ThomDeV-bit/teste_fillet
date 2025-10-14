@@ -34,6 +34,14 @@ export class ClienteService {
     }
 
     async updateCliente(id: number, updateClienteDto: UpdateClienteDto): Promise<boolean> {
+        const cep = await this.cepService.consultaCep(updateClienteDto.cep)
+
+        if(cep) {
+            updateClienteDto.bairro = cep.bairro
+            updateClienteDto.cidade = cep.localidade
+            updateClienteDto.estado = cep.estado
+        }
+
         return await this.clienteRepository.updateCliente(id, updateClienteDto)
     }
 
