@@ -47,12 +47,6 @@ obs : caso aconteça o seguinte erro ao rodar os testes pela primeira vez, rode 
   https://jestjs.io/docs/configuration
 ```
 
-* O comando irá:
-
-  * Construir a imagem Docker da aplicação NestJS
-  * Subir o container da aplicação
-  * Subir o container do banco de dados
-
 ### 3️⃣ Acessando a aplicação
 
 * A aplicação ficará disponível em: `http://localhost:3000`
