@@ -34,6 +34,19 @@ docker-compose up -d
 docker-compose exec app run npm test
 ```
 
+obs : caso aconteça o seguinte erro ao rodar os testes pela primeira vez, rode novamente o comando -> docker-compose exec app run npm test
+
+```bash
+[napi-postinstall@0.3.4] Trying to install package "@unrs/resolver-binding-linux-x64-musl" using npm
+● Validation Error:
+
+  Module ts-jest in the transform option was not found.
+         <rootDir> is: /usr/src/app/src
+
+  Configuration Documentation:
+  https://jestjs.io/docs/configuration
+```
+
 * O comando irá:
 
   * Construir a imagem Docker da aplicação NestJS
