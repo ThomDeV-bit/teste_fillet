@@ -15,23 +15,23 @@ Antes de começar, você precisa ter instalado:
 
 ## Rodando com Docker
 
-### 1️⃣ Build e start dos containers
+### 1️⃣ Criar a rede interna (subnet)
+
+Para isolar os containers e permitir comunicação interna, criamos uma rede Docker chamada `internal_network`:
+
+```bash
+docker network create --driver bridge internal_network
+```
+
+### 2️⃣ Build e start dos containers
 
 ```bash
 docker-compose up -d
 ```
 ### rodar os testes
+
 ```bash
 docker-compose exec app run npm test
-```
-### rodar os aplicação
-```bash
-docker-compose exec app npm run start
-```
-
-### parar os containers
-```bash
-docker-compose down
 ```
 
 * O comando irá:
@@ -40,14 +40,14 @@ docker-compose down
   * Subir o container da aplicação
   * Subir o container do banco de dados
 
-### 2️⃣ Acessando a aplicação
+### 3️⃣ Acessando a aplicação
 
 * A aplicação ficará disponível em: `http://localhost:3000`
 * Se você estiver usando Swagger, geralmente em: `http://localhost:3000/api`
 
 ---
 
-### 3️⃣ Comandos úteis
+### Comandos úteis
 
 * **Parar containers**:
 
@@ -73,39 +73,8 @@ docker-compose logs -f
 docker-compose build --no-cache
 ```
 
----
-
-## Rodando testes
-
-Rodar os testes dentro do container:
-
-```bash
-docker-compose exec app npm run test
-```
-
-Ou localmente:
-
-```bash
-npm install
-npm run test
-```
-
----
-
-## Scripts npm disponíveis
-
-* `npm run start` → Inicia a aplicação
-* `npm run start:dev` → Inicia em modo desenvolvimento (watch)
-* `npm run build` → Compila a aplicação
-* `npm run test` → Executa os testes unitários
-* `npm run test:watch` → Testes em modo watch
-* `npm run lint` → Checa lint do projeto
-
----
-
 ## Observações
 
 * Certifique-se de que as portas definidas no `.env` e `docker-compose.yml` não estejam em conflito com outros serviços.
-* O `docker-compose.yml` pode incluir outros serviços como Redis, RabbitMQ, etc., se necessário.
-* Para ambientes de produção, configure volumes, redes e variáveis de ambiente adequadamente.
+
 
