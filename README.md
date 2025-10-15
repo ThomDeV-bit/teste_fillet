@@ -31,7 +31,7 @@ docker-compose up -d
 ### rodar os testes
 
 ```bash
-docker-compose exec app run npm test
+docker-compose exec app npm run test
 ```
 
 obs : caso aconteça o seguinte erro ao rodar os testes pela primeira vez, rode novamente o comando -> docker-compose exec app run npm test
