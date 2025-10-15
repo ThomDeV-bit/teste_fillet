@@ -34,7 +34,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      NODE_ENV: production
     networks:
       - internal_network
     container_name: teste_fillet
@@ -43,9 +42,6 @@ services:
       - "3000:3000"
     expose:
       - 3000
-    volumes:
-      - .:/usr/src/app
-    command: sh -c "npm run build && npm run start:prod"
 
 networks:
   internal_network:

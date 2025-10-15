@@ -6,9 +6,7 @@ COPY package*.json ./
 
 COPY . .
 
-RUN npm install --include=dev  --quiet --no-optional --no-found --loglevel=
-
-
+RUN npm install --include=dev --quiet --no-optional --no-fund --loglevel=error
 
 RUN npm run build
 

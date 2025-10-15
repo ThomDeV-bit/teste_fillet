@@ -18,7 +18,20 @@ Antes de começar, você precisa ter instalado:
 ### 1️⃣ Build e start dos containers
 
 ```bash
-docker-compose up --build
+docker-compose up -d
+```
+### rodar os testes
+```bash
+docker-compose exec app run npm test
+```
+### rodar os aplicação
+```bash
+docker-compose exec app npm run start
+```
+
+### parar os containers
+```bash
+docker-compose down
 ```
 
 * O comando irá:
