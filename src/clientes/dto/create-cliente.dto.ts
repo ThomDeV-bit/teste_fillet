@@ -34,7 +34,9 @@ export class CreateClienteDto {
     @IsValidCpf()
     cpf: string
 
-    @ApiProperty()
+    @ApiProperty({
+        example: '78048060',
+    })
     @Length(8, 8, { message: 'Cep inválido!' })
     @IsString()
     cep: string
